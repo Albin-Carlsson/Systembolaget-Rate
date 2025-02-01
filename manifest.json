@@ -8,7 +8,7 @@
   ],
   "content_scripts": [
     {
-      "matches": ["https://www.systembolaget.se/*"],
+      "matches": ["https://www.systembolaget.se/sortiment/*"],
       "js": ["content.js"]
     }
   ],
