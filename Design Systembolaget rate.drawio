@@ -1,0 +1,109 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:134.0) Gecko/20100101 Firefox/134.0" version="26.0.10">
+  <diagram name="Page-1" id="D3ZQU6o-Dc6J7b4aebE8">
+    <mxGraphModel dx="1440" dy="778" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="IWRftReQaaGBCe8Ju6_O-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="IWRftReQaaGBCe8Ju6_O-1" target="IWRftReQaaGBCe8Ju6_O-2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="IWRftReQaaGBCe8Ju6_O-1" value="Start&lt;br&gt;(På systembolaget.se)" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="365" y="110" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="qZgPSZTaM6UZK80v02JZ-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="IWRftReQaaGBCe8Ju6_O-2" target="IWRftReQaaGBCe8Ju6_O-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="IWRftReQaaGBCe8Ju6_O-2" value="Går in på produktlsta" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="365" y="250" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="IWRftReQaaGBCe8Ju6_O-22" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="IWRftReQaaGBCe8Ju6_O-6" target="IWRftReQaaGBCe8Ju6_O-21" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="IWRftReQaaGBCe8Ju6_O-6" value="&lt;div&gt;Tillsätt rating till varje produkt från och med (sida*X)-nte produkten.&lt;/div&gt;&lt;div&gt;Det blir max X produkter att ändra&lt;br&gt;&lt;/div&gt;" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="320" y="670" width="210" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="IWRftReQaaGBCe8Ju6_O-18" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="IWRftReQaaGBCe8Ju6_O-12" target="IWRftReQaaGBCe8Ju6_O-20" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="425" y="660" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="IWRftReQaaGBCe8Ju6_O-12" value="generera JSON fil för alla drickor som uppfyller sorteringsval" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="290" y="460" width="270" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="IWRftReQaaGBCe8Ju6_O-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="IWRftReQaaGBCe8Ju6_O-20" target="IWRftReQaaGBCe8Ju6_O-6" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="425" y="720" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="IWRftReQaaGBCe8Ju6_O-20" value="Användare väljer recensioner-knapp" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="360" y="550" width="130" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="IWRftReQaaGBCe8Ju6_O-21" value="Användare klickar nästa sida" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="370" y="770" width="110" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="IWRftReQaaGBCe8Ju6_O-24" value="" style="endArrow=classic;html=1;rounded=0;" parent="1" target="IWRftReQaaGBCe8Ju6_O-6" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="600" y="700" as="sourcePoint" />
+            <mxPoint x="650" y="650" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="IWRftReQaaGBCe8Ju6_O-25" value="" style="endArrow=classic;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="480" y="810" as="sourcePoint" />
+            <mxPoint x="600" y="810" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="IWRftReQaaGBCe8Ju6_O-26" value="" style="endArrow=classic;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="600" y="809.66" as="sourcePoint" />
+            <mxPoint x="600" y="700" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="IWRftReQaaGBCe8Ju6_O-27" value="Ja" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="480" y="780" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="IWRftReQaaGBCe8Ju6_O-28" value="" style="endArrow=classic;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="370" y="810" as="sourcePoint" />
+            <mxPoint x="240" y="810" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="IWRftReQaaGBCe8Ju6_O-30" value="" style="endArrow=classic;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="240" y="160" as="sourcePoint" />
+            <mxPoint x="360" y="160" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="IWRftReQaaGBCe8Ju6_O-31" value="Nej" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="305" y="780" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="IWRftReQaaGBCe8Ju6_O-38" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="IWRftReQaaGBCe8Ju6_O-33" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="240" y="160" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="IWRftReQaaGBCe8Ju6_O-33" value="&lt;div&gt;Användare går&amp;nbsp;&lt;/div&gt;&lt;div&gt;till ny flik&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="175" y="540" width="130" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="IWRftReQaaGBCe8Ju6_O-34" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" target="IWRftReQaaGBCe8Ju6_O-33" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="240" y="810" as="sourcePoint" />
+            <mxPoint x="290" y="760" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="IWRftReQaaGBCe8Ju6_O-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.919;entryY=0.535;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="IWRftReQaaGBCe8Ju6_O-20" target="IWRftReQaaGBCe8Ju6_O-33" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="IWRftReQaaGBCe8Ju6_O-36" value="Nej" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="300" y="550" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="IWRftReQaaGBCe8Ju6_O-37" value="Ja" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="425" y="630" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="IWRftReQaaGBCe8Ju6_O-39" value="Antag X produkter per sida" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="590" y="460" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
