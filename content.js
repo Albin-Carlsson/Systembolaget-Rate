@@ -22,6 +22,14 @@
     return window.location.pathname.startsWith("/sortiment/");
   }
   
+  function getPageParam() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const pStr = urlParams.get("p");
+    const pNum = parseInt(pStr, 10);
+    console.log("[getPageParam] pStr=", pStr, "pNum=", pNum);
+    return isNaN(pNum) ? 1 : pNum;
+  }
+
   // Observe for SPA navigation
   function observePageChanges() {
     let lastPath = window.location.pathname;
@@ -105,7 +113,8 @@
     if (newValue === "Rating-Descending") {
       console.log("[handleDropdownChange] → Selected rating. Save to localStorage + insert test items.");
       localStorage.setItem("selectedSortOption", "Rating-Descending");
-      onRecensionerSelected();
+      const page = getPageParam();
+      onRecensionerSelected(page);
     } else {
       // We are picking something that is NOT rating
       if (oldValue === "Rating-Descending") {
@@ -155,7 +164,7 @@
     return finalUrl;
   }
   
-  // The function that replaces items in the DOM with test items
+/*   // The function that replaces items in the DOM with test items
   function onRecensionerSelected() {
     console.log("[onRecensionerSelected] Replacing product tiles with rating-based test items...");
 
@@ -166,46 +175,8 @@
     }
   
     const testItemHTML = `
-    <a id="tile:24524221" href="/produkt/ol/nils-oscar-god-lager-3528801/" class="e1em7da90 css-ijjvfs e12xogow0">
-        <div class="css-2114pf e12xogow0">
-            <div class="css-1n1rld4 e12xogow0">
-                <div class="css-k008qs e12xogow0">
-                    <div height="104" width="53" class="eo1v0sn1 css-1k87ene e12xogow0">
-                        <img alt="Produktbild för Nils Oscar God Lager" loading="lazy" width="53" height="104" decoding="async"
-                            class="css-0 eo1v0sn0" style="color: transparent; object-fit: contain;"
-                            src="https://product-cdn.systembolaget.se/productimages/24524221/24524221_100.webp?q=75&amp;w=2000">
-                    </div>
-                    <div class="css-1x8f7yz e12xogow0">
-                        <div class="css-j7qwjs e12xogow0">
-                            <p class="css-4oiqd8 eizoeol0">Öl, Ljus lager, Dortmunder och helles</p>
-                            <div class="css-rqa69l e1iq8b8k1">
-                                <p color="black" class="css-1njx6qf e1iq8b8k0">Nils Oscar God Lager</p>
-                                <p color="black65" class="css-su700l e1iq8b8k0">Nr 35288</p>
-                            </div>
-                        </div>
-                        <div class="css-gg4vpm e12xogow0">
-                            <div id="stock_scrollcontainer" class="css-1dtnjt5 e12xogow0">
-                                <div class="css-k008qs e12xogow0">
-                                    <div display="flex" class="css-1kb67a e12xogow0">
-                                        <svg name="Sverige" class="css-1fbfr4p e1tsvu050">
-                                            <use href="/flags.sprite.svg#Sverige"></use>
-                                        </svg>
-                                    </div>
-                                    <p overflow="hidden" class="e1fb4th00 css-zwokwd eizoeol0">Sverige</p>
-                                </div>
-                                <p overflow="hidden" class="e1fb4th00 css-zwokwd eizoeol0">500 ml</p>
-                                <p overflow="hidden" class="e1fb4th00 css-zwokwd eizoeol0">5,3 % vol.</p>
-                            </div>
-                            <div class="css-k008qs e12xogow0">
-                                <span class="css-12jzfu e1eak8c10"></span>
-                                <p class="css-a2frwy eizoeol0">29:90</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </a>`;
+    <a id="tile:48816537" href="/produkt/ol/kaiserdom-120912/" class="e1em7da90 css-ijjvfs e12xogow0"><div class="css-2114pf e12xogow0"><div width="77" height="24" class="css-h56mn e12xogow0"><p color="black" class="css-16km5av eizoeol0">Nyhet</p></div><div class="css-1n1rld4 e12xogow0"><div class="css-k008qs e12xogow0"><div height="104" width="53" class="eo1v0sn1 css-1k87ene e12xogow0"><img alt="Produktbild för Kaiserdom" loading="lazy" width="53" height="104" decoding="async" data-nimg="1" class="css-0 eo1v0sn0" style="color: transparent; object-fit: contain;" sizes="(min-width: 1208px) 1208px, 100vw" srcset="https://product-cdn.systembolaget.se/productimages/48816537/48816537_100.webp?q=75&amp;w=375 375w, https://product-cdn.systembolaget.se/productimages/48816537/48816537_100.webp?q=75&amp;w=384 384w, https://product-cdn.systembolaget.se/productimages/48816537/48816537_100.webp?q=75&amp;w=768 768w, https://product-cdn.systembolaget.se/productimages/48816537/48816537_100.webp?q=75&amp;w=1024 1024w, https://product-cdn.systembolaget.se/productimages/48816537/48816537_100.webp?q=75&amp;w=1208 1208w, https://product-cdn.systembolaget.se/productimages/48816537/48816537_100.webp?q=75&amp;w=2000 2000w" src="https://product-cdn.systembolaget.se/productimages/48816537/48816537_100.webp?q=75&amp;w=2000"></div><div class="css-1x8f7yz e12xogow0"><div class="css-j7qwjs e12xogow0"><p class="css-4oiqd8 eizoeol0">Öl, Ljus lager, Pilsner - tysk stil</p><div class="css-rqa69l e1iq8b8k1"><p color="black" class="css-1njx6qf e1iq8b8k0">Kaiserdom</p><p color="black65" class="css-1hdv0wt e1iq8b8k0">Pilsner</p><p color="black65" class="css-su700l e1iq8b8k0">Nr 1209</p></div></div><div class="css-gg4vpm e12xogow0"><div id="stock_scrollcontainer" class="css-1dtnjt5 e12xogow0"><div class="css-k008qs e12xogow0"><div display="flex" class="css-1kb67a e12xogow0"><svg name="Tyskland" class="css-1fbfr4p e1tsvu050"><use href="/flags.sprite.svg#Tyskland"></use></svg></div><p overflow="hidden" class="e1fb4th00 css-zwokwd eizoeol0">Tyskland</p></div><p overflow="hidden" class="e1fb4th00 css-zwokwd eizoeol0">500 ml</p><p overflow="hidden" class="e1fb4th00 css-zwokwd eizoeol0">4,9 % vol.</p></div><div class="css-k008qs e12xogow0"><span class="css-12jzfu e1eak8c10"></span><p class="css-a2frwy eizoeol0">19:90*</p></div></div></div></div></div><div class="css-j7qwjs e12xogow0"></div><div class="css-99ixf0 e12xogow0"></div></div></a>
+    `;
 
   
     container.innerHTML = "";
@@ -214,6 +185,47 @@
     }
   
     console.log("[onRecensionerSelected] Injected 30 test items.");
+  } */
+
+  function onRecensionerSelected(page) {
+    console.log("[onRecensionerSelected] Replacing product tiles with rating-based items...");
+  
+    const container = document.querySelector("div.css-1fgrh1r.e12xogow0");
+    if (!container) {
+      console.warn("[onRecensionerSelected] Container not found. Aborting injection.");
+      return;
+    }
+    
+    // Clear out the existing contents in the container
+    container.innerHTML = "";
+  
+    // Get the correct URL for beers.json from the extension
+    const beersJsonUrl = chrome.runtime.getURL("beers.json");
+  
+    fetch(beersJsonUrl)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(jsonData => {
+        const beers = jsonData.beers || [];
+  
+        // 30 items per page
+        const limitedBeers = beers.slice(30*page-30, 30*page);
+  
+        // Inject them into the container
+        limitedBeers.forEach(beer => {
+          // 'beer.data' should be a string containing the raw HTML snippet
+          container.innerHTML += beer.data;
+        });
+        
+        console.log(`[onRecensionerSelected] Injected ${limitedBeers.length} items (first 30) from beers.json.`);
+      })
+      .catch(error => {
+        console.error("[onRecensionerSelected] Error fetching beers.json:", error);
+      });
   }
   
   // Called when leaving rating
@@ -235,8 +247,9 @@
     if (lastSelected === "Rating-Descending" && sortParam === "Rating" && dirParam === "Descending") {
       console.log("[checkIfRatingSelected] -> Re-applying rating...");
       selectElement.value = "Rating-Descending";
-      onRecensionerSelected();
-    } else {
+      const page = getPageParam();
+      onRecensionerSelected(page);
+        } else {
       console.log("[checkIfRatingSelected] -> Not applying rating. Remove leftover localStorage if any.");
       localStorage.removeItem("selectedSortOption");
     }
