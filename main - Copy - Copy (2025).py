@@ -56,7 +56,7 @@ def scrape_beers():
 
 try:
     # Open the webpage
-    driver.get("https://www.systembolaget.se/sortiment/ol/annan-ol/")
+    driver.get("https://www.systembolaget.se/sortiment/ol/ljus-lager/")
 
     # Accept age confirmation
     WebDriverWait(driver, 10).until(
