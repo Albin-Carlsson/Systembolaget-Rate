@@ -1,29 +1,31 @@
 {
-  "manifest_version": 3,
-  "name": "Systembolaget Rate",
-  "version": "1.0",
-  "permissions": [
-    "activeTab",
-    "scripting"
-  ],
-  "content_scripts": [
-    {
-      "matches": ["https://www.systembolaget.se/sortiment/*"],
-      "js": ["content.js"]
-    }
-  ],
-  "web_accessible_resources": [
-    {
-      "resources": ["beers.json"],
-      "matches": ["<all_urls>"]
-    }
-  ],
-  "action": {
-    "default_popup": "popup.html",
-    "default_icon": {
-      "16": "images/icon16.png",
-      "48": "images/icon48.png",
-      "128": "images/icon128.png"
+    "manifest_version": 2,
+    "name": "Systembolaget Rate",
+    "version": "1.0",
+    "permissions": [
+      "activeTab",
+      "scripting",
+      "http://localhost:3000/"
+    ],
+    "content_scripts": [
+      {
+        "matches": ["https://www.systembolaget.se/*"],
+        "js": ["content.js"]
+      }
+    ],
+    "background": {
+      "scripts": ["background.js"],
+      "persistent": false
+    },
+    "web_accessible_resources": [
+      "beers.json"
+    ],
+    "browser_action": {
+      "default_popup": "popup.html",
+      "default_icon": {
+        "16": "images/icon16.png",
+        "48": "images/icon48.png",
+        "128": "images/icon128.png"
+      }
     }
   }
-}

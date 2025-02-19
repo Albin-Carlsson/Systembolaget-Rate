@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "fs-extra": "^11.3.0",
+    "install": "^0.13.0",
+    "minimist": "^1.2.8",
+    "p-queue": "^8.1.0",
+    "pip": "^0.0.1",
+    "playwright": "^1.50.1",
+    "puppeteer": "^24.2.1",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
+  }
+}
