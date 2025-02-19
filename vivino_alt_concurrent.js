@@ -40,7 +40,7 @@ async function randomScroll(page) {
     await page.evaluate((scrollStep) => {
       window.scrollBy(0, scrollStep);
     }, randomInt(200, 600));
-    await sleep(randomDelay(300, 800)); // shorter delay for improved performance
+    await sleep(randomDelay(300, 800));
   }
 }
 
@@ -56,7 +56,7 @@ function chunkArray(arr, chunkSize) {
   return chunks;
 }
 
-// Functions to set and verify the "Ship To" destination on the site.
+// Functions to set and verify the "Ship To" destination.
 async function setShipTo(countryCode, stateCode, page) {
   return page.evaluate(
     async (c, s) => {
@@ -134,7 +134,8 @@ function collectItems() {
   };
 }
 
-// Navigates to a URL with retries and exponential backoff.
+// A robust navigation function for pages that have a search result.
+// (Used for search queries, not for the homepage.)
 async function robustGoto(page, url, maxRetries = 3) {
   let attempt = 0;
   while (attempt < maxRetries) {
@@ -156,6 +157,13 @@ async function robustGoto(page, url, maxRetries = 3) {
     }
   }
   throw new Error(`Failed to load ${url} after ${maxRetries} attempts`);
+}
+
+// Uses a simple goto and waits for the "body" element (for the homepage).
+async function simpleGoto(page, url) {
+  await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 15000 });
+  await page.waitForSelector('body', { timeout: 10000 });
+  return;
 }
 
 // Creates a new page (in the current browser instance) to search for a wine.
@@ -288,13 +296,18 @@ async function processWine(wine, index, total, browser) {
     });
 
     try {
-      await robustGoto(mainPage, BASE_URL);
+      // Instead of going to vivino.com and waiting for .card.card-lg (which isn't present on the homepage),
+      // we navigate to the homepage and wait for a generic element like the body.
+      await mainPage.goto(BASE_URL, { waitUntil: 'domcontentloaded', timeout: 15000 });
+      await mainPage.waitForSelector('body', { timeout: 10000 });
       await randomScroll(mainPage);
       let shipToOk = await isShipTo(country, state, mainPage);
       if (!shipToOk) {
         const setOk = await setShipTo(country, state, mainPage);
         if (setOk) {
-          await robustGoto(mainPage, BASE_URL);
+          // Refresh the page after setting "Ship To"
+          await mainPage.reload({ waitUntil: 'domcontentloaded' });
+          await mainPage.waitForSelector('body', { timeout: 10000 });
           await randomScroll(mainPage);
           shipToOk = await isShipTo(country, state, mainPage);
         }
