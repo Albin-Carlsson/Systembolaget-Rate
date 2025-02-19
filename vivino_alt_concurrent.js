@@ -28,26 +28,26 @@ function randomDelay(minMs, maxMs) {
   return randomInt(minMs, maxMs);
 }
 
-// Removes a 4-digit year (19xx or 20xx) from a string
+// Removes a 4-digit year (e.g., "1999" or "2010") from a string.
 function removeYear(str) {
   return str.replace(/\b(19|20)\d{2}\b/g, '').trim();
 }
 
-// Scroll the page in small steps, then sleep briefly
+// Scrolls the page in small steps to mimic human behavior.
 async function randomScroll(page) {
   const steps = randomInt(2, 5);
   for (let i = 0; i < steps; i++) {
     await page.evaluate((scrollStep) => {
       window.scrollBy(0, scrollStep);
     }, randomInt(200, 600));
-    await sleep(randomDelay(300, 800));
+    await sleep(randomDelay(300, 800)); // shorter delay for improved performance
   }
 }
 
 const BASE_URL = 'https://www.vivino.com';
 const SEARCH_PATH = '/search/wines?q=';
 
-// Helper: Chunk an array into pieces of a given size
+// Helper: Chunk an array into pieces of a given size.
 function chunkArray(arr, chunkSize) {
   const chunks = [];
   for (let i = 0; i < arr.length; i += chunkSize) {
@@ -56,7 +56,7 @@ function chunkArray(arr, chunkSize) {
   return chunks;
 }
 
-// Functions to set and verify "Ship To" destination (accepts a page parameter)
+// Functions to set and verify the "Ship To" destination on the site.
 async function setShipTo(countryCode, stateCode, page) {
   return page.evaluate(
     async (c, s) => {
@@ -97,7 +97,7 @@ async function isShipTo(countryCode, stateCode, page) {
   );
 }
 
-// Function to collect rating data from the loaded page
+// Extracts rating data from the page.
 function collectItems() {
   const numerize = (stringNumber) => {
     const str = stringNumber.replace(/[^0-9,.]+/g, '').replace(',', '.');
@@ -134,7 +134,7 @@ function collectItems() {
   };
 }
 
-// Retry mechanism with exponential backoff for navigating and waiting for a key element
+// Navigates to a URL with retries and exponential backoff.
 async function robustGoto(page, url, maxRetries = 3) {
   let attempt = 0;
   while (attempt < maxRetries) {
@@ -143,22 +143,26 @@ async function robustGoto(page, url, maxRetries = 3) {
         waitUntil: 'domcontentloaded',
         timeout: 15000,
       });
-      // Wait briefly for the main element
+      // Wait for the key element to appear.
       await page.waitForSelector('.card.card-lg', { timeout: 5000 });
       return response;
     } catch (err) {
       attempt++;
       const delay = 1000 * Math.pow(2, attempt);
-      console.warn(`Retry ${attempt} for ${url} after ${delay}ms due to error: ${err.message}`);
+      console.warn(
+        `Retry ${attempt} for ${url} after ${delay}ms due to error: ${err.message}`
+      );
       await sleep(delay);
     }
   }
   throw new Error(`Failed to load ${url} after ${maxRetries} attempts`);
 }
 
-// Create a new search page within the provided incognito context
-async function searchWine(context, wineTerm) {
-  const p = await context.newPage();
+// Creates a new page (in the current browser instance) to search for a wine.
+async function searchWine(browser, wineTerm) {
+  const p = await browser.newPage();
+
+  // Set random user agent, viewport, and enable request interception.
   await p.setUserAgent(USER_AGENTS[randomInt(0, USER_AGENTS.length - 1)]);
   await p.setExtraHTTPHeaders({ 'Accept-Language': 'en-US,en;q=0.9' });
   await p.setViewport({ width: randomInt(1366, 1920), height: randomInt(768, 1080) });
@@ -187,20 +191,20 @@ async function searchWine(context, wineTerm) {
   return { rating, link };
 }
 
-// Process a single wine using the provided incognito context
-async function processWine(wine, index, total, context) {
+// Processes a single wine search.
+async function processWine(wine, index, total, browser) {
   const searchTerm = wine.wine_name || 'Unknown Wine';
   console.log(`(${index + 1}/${total}) Searching for: ${searchTerm}`);
 
-  let { rating, link } = await searchWine(context, searchTerm);
+  let { rating, link } = await searchWine(browser, searchTerm);
 
-  // If no rating found, try removing the year
+  // If no rating is found, try again after removing the year.
   if (!rating) {
     const noYearTerm = removeYear(searchTerm);
     if (noYearTerm !== searchTerm) {
-      console.log(`   → No rating found. Trying again without year: "${noYearTerm}"`);
+      console.log(`   → No rating found. Trying without year: "${noYearTerm}"`);
       await sleep(randomDelay(500, 1500));
-      const retryResult = await searchWine(context, noYearTerm);
+      const retryResult = await searchWine(browser, noYearTerm);
       if (retryResult.rating) {
         rating = retryResult.rating;
         link = retryResult.link;
@@ -221,7 +225,7 @@ async function processWine(wine, index, total, context) {
 }
 
 (async () => {
-  // Parse command-line arguments including distributed worker options
+  // Parse command-line arguments (including distributed worker options).
   const args = minimist(process.argv.slice(2));
   const country = args.country || 'US';
   let state = args.state || '';
@@ -229,12 +233,11 @@ async function processWine(wine, index, total, context) {
     state = 'CA';
   }
 
-  // Distributed scraping options: each worker processes a partition of the array.
-  // Example: --workerId=0 --totalWorkers=3
+  // Distributed scraping options: e.g., --workerId=0 --totalWorkers=3.
   const workerId = args.workerId ? parseInt(args.workerId, 10) : 0;
   const totalWorkers = args.totalWorkers ? parseInt(args.totalWorkers, 10) : 1;
 
-  // 1) Read the entire JSON file
+  // 1) Read the entire JSON file.
   let allData;
   try {
     allData = await fs.readJSON('items.json');
@@ -243,7 +246,7 @@ async function processWine(wine, index, total, context) {
     process.exit(1);
   }
 
-  // 2) Extract the wines array and partition it if running distributed
+  // 2) Extract and partition the wines array if running distributed.
   let wines = allData.wines;
   if (!Array.isArray(wines)) {
     console.error('Error: "wines" property is not an array in items.json');
@@ -259,13 +262,7 @@ async function processWine(wine, index, total, context) {
     console.log(`Processing all ${wines.length} wines.`);
   }
 
-  // 3) Launch a single browser instance
-  const browser = await puppeteer.launch({
-    headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],
-  });
-
-  // Process wines in chunks (e.g., 100 per batch) using incognito contexts
+  // 3) Process wines in chunks—for each chunk, launch a new browser instance for full session isolation.
   const CHUNK_SIZE = 100;
   const wineChunks = chunkArray(wines, CHUNK_SIZE);
   let processedCount = 0;
@@ -273,11 +270,14 @@ async function processWine(wine, index, total, context) {
   for (const chunk of wineChunks) {
     console.log(`\n=== Starting new session for wines ${processedCount + 1} to ${processedCount + chunk.length} ===`);
 
-    // Create a new incognito context (lightweight session reset)
-    const context = await browser.createIncognitoBrowserContext();
+    // Launch a new browser instance (fresh session) for this chunk.
+    const browser = await puppeteer.launch({
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    });
 
-    // Create a main page within the context to set the "Ship To" destination
-    const mainPage = await context.newPage();
+    // Create a main page to set the "Ship To" destination.
+    const mainPage = await browser.newPage();
     await mainPage.setUserAgent(USER_AGENTS[randomInt(0, USER_AGENTS.length - 1)]);
     await mainPage.setExtraHTTPHeaders({ 'Accept-Language': 'en-US,en;q=0.9' });
     await mainPage.setViewport({ width: randomInt(1366, 1920), height: randomInt(768, 1080) });
@@ -307,12 +307,12 @@ async function processWine(wine, index, total, context) {
     }
     await mainPage.close();
 
-    // Create a concurrency queue for this batch (concurrency of 3)
+    // Create a concurrency queue for this chunk (using a concurrency of 3).
     const queue = new PQueue({ concurrency: 3 });
     for (let i = 0; i < chunk.length; i++) {
       const wineIndex = processedCount + i;
       queue.add(async () => {
-        await processWine(chunk[i], wineIndex, wines.length, context);
+        await processWine(chunk[i], wineIndex, wines.length, browser);
         await sleep(randomDelay(1000, 2000));
         if ((wineIndex + 1) % 5 === 0) {
           console.log('Taking a longer break to mimic human behavior...');
@@ -324,14 +324,13 @@ async function processWine(wine, index, total, context) {
     await queue.onIdle();
     processedCount += chunk.length;
 
-    // Close the incognito context to reset session state for the next chunk
-    await context.close();
+    // Close the browser instance for this chunk (session ends here).
+    await browser.close();
     console.log(`=== Finished session for wines up to ${processedCount} ===\n`);
-    await sleep(randomDelay(5000, 10000));
+    await sleep(randomDelay(5000, 10000)); // Delay between chunks.
   }
 
   // 4) Write the updated wines array to a worker-specific output file.
-  // Each computer will produce its own file, e.g. items_worker_0.json
   try {
     let outputData = { ...allData, wines };
     const outputFileName = `items_worker_${workerId}.json`;
@@ -340,6 +339,4 @@ async function processWine(wine, index, total, context) {
   } catch (err) {
     console.error('Error writing output file:', err);
   }
-
-  await browser.close();
 })();
