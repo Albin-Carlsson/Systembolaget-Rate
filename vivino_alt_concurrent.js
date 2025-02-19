@@ -263,7 +263,7 @@ async function processWine(wine, index, total, browser) {
   }
 
   // 3) Process wines in chunks—for each chunk, launch a new browser instance for full session isolation.
-  const CHUNK_SIZE = 100;
+  const CHUNK_SIZE = 20;
   const wineChunks = chunkArray(wines, CHUNK_SIZE);
   let processedCount = 0;
 
