@@ -5,8 +5,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 
-# Initialize the WebDriver
-driver = webdriver.Chrome()  # or specify the path to your ChromeDriver
+#init webdriver
+driver = webdriver.Chrome() 
 
 
 def process_beer_name(beer_name):
@@ -15,7 +15,6 @@ def process_beer_name(beer_name):
     driver.get(address)
 
     try:
-        # Wait for the search results to load and locate the rating element
         rating_element = WebDriverWait(driver, 1).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, "span.num"))
         )
@@ -49,3 +48,4 @@ try:
     read_and_process_beer_names("beers.json")
 finally:
     driver.quit()
+
